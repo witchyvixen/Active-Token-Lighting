@@ -273,8 +273,8 @@ class ATL {
         }
     }
     static async applyEffects(entity, effects) {
-        if (entity.documentName !== "Actor") return;
-        let link = getProperty(entity, "prototypeToken.actorLink")
+        const firstGM = game.users?.find(u => u.isGM && u.active);
+        if (game.user.id !== firstGM.id) return;        let link = getProperty(entity, "prototypeToken.actorLink")
         if (link === undefined) link = true
         let tokenArray = []
         if (!link) tokenArray = [entity.token?.object]
@@ -401,8 +401,7 @@ class ATL {
         mergeObject(updates, overrides)
         if (entity.prototypeToken.randomImg) delete updates.img
         let updateMap = tokenArray.map(t => mergeObject({ _id: t.id }, updates))
-        const firstGM = game.users?.find(u => u.isGM && u.active);
-        if (game.user.id === firstGM.id) await canvas.scene.updateEmbeddedDocuments("Token", updateMap)
+     await canvas.scene.updateEmbeddedDocuments("Token", updateMap)
     }
 
 
