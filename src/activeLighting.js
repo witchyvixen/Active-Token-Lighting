@@ -401,7 +401,8 @@ class ATL {
         mergeObject(updates, overrides)
         if (entity.prototypeToken.randomImg) delete updates.img
         let updateMap = tokenArray.map(t => mergeObject({ _id: t.id }, updates))
-        await canvas.scene.updateEmbeddedDocuments("Token", updateMap)
+        const firstGM = game.users?.find(u => u.isGM && u.active);
+        if (game.user.id === firstGM.id) await canvas.scene.updateEmbeddedDocuments("Token", updateMap)
     }
 
 
